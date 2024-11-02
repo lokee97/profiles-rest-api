@@ -4,6 +4,7 @@ from rest_framework import status
 from profiles_api import serializers,models,permissions
 from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
 
 class HelloApiView(APIView):
     #Test API View
@@ -102,5 +103,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     #Handle creating and updating profiles
     serializer_class = serializers.UserProfileSerializer
     queryset = models.userProfile.objects.all()
-    authentication_classes = (TokenAuthentication,) #creating as tuple
+    authentication_classes = (TokenAuthentication,) #creating as tuple becoz it's not a single value which is being passed
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends =(filters.SearchFilter,)
+    search_fields = ('name','email',)
