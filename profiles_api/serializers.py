@@ -12,7 +12,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.userProfile
         fields=('id','email','name','password')
-        extra_kwars={
+        extra_kwargs={
             'password':{
                 'write_only':True,
                 'style':{'input_type': 'password'}
@@ -34,3 +34,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password = validated_data.pop('password')
             instance.set_password(password)
         return super().update(instance,validated_data)
+
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    #Serializers profile feed items
+
+    class Meta:
+        model = models.ProfileFeedItem
+        fields = ('id','user_profile','status_text','created_on')
+        extra_kwargs = {'user_profile':{'read_only':True}}  # user_profile is set to read_only because only the authenticated user can add feeds to that profile....we can avoid unnecessary creation of profiles and feeds
